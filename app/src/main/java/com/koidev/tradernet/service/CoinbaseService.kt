@@ -1,6 +1,5 @@
 package com.koidev.tradernet.service
 
-import com.koidev.tradernet.model.Subscribe
 import com.tinder.scarlet.WebSocket
 import com.tinder.scarlet.ws.Receive
 import com.tinder.scarlet.ws.Send

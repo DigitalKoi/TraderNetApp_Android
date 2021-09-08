@@ -1,7 +1,11 @@
 package com.koidev.tradernet.di
 
+import android.app.Application
+import android.content.Context
+import android.telecom.ConnectionService
 import com.koidev.tradernet.BuildConfig
 import com.koidev.tradernet.TraderNetApp
+import com.koidev.tradernet.service.CoinbaseService
 import com.koidev.tradernet.service.FlowStreamAdapter
 import com.squareup.moshi.Moshi
 import com.tinder.scarlet.Scarlet
@@ -23,7 +27,7 @@ class NetworkModule {
 
     @Provides
     @AppScope
-    fun provideMoshi() = Moshi.Builder().build()
+    fun provideMoshi(): Moshi = Moshi.Builder().build()
 
     @Provides
     @AppScope
@@ -40,13 +44,12 @@ class NetworkModule {
     }
 
     @Provides
-
+    @AppScope
     fun provideScarlet(
-        application: TraderNetApp,
+        application: Application,
+        @BaseUrl uri: String,
         client: OkHttpClient,
-        moshi: Moshi,
-        @BaseUrl
-        uri: String
+        moshi: Moshi
     ): Scarlet {
         return Scarlet.Builder()
             .webSocketFactory(client.newWebSocketFactory(uri))
@@ -55,4 +58,8 @@ class NetworkModule {
             .lifecycle(AndroidLifecycle.ofApplicationForeground(application))
             .build()
     }
+
+    @Provides
+    @AppScope
+    fun provideCoinbaseService(scarlet: Scarlet): CoinbaseService = scarlet.create()
 }

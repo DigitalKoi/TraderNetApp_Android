@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-        service: CoinbaseService
-        ) : ViewModel() {
+    service: CoinbaseService
+) : ViewModel() {
 
-            init {
-                service.observeWebSocket()
+    init {
+        service.observeWebSocket()
             .flowOn(Dispatchers.IO)
             .onEach { event ->
                 when (event) {
